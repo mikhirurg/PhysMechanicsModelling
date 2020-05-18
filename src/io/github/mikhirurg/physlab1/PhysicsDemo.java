@@ -70,7 +70,7 @@ public class PhysicsDemo {
         c.gridheight = 1;
         pane.add(graphPanel, c);
 
-        JLabel label = new JLabel("Координаты начала и конца рельса:");
+        JLabel label = new JLabel("Координаты начала и конца рельса (мм):");
         c.gridx = 1;
         c.gridy = 0;
         c.gridwidth = 2;
@@ -96,7 +96,7 @@ public class PhysicsDemo {
         c.gridheight = 1;
         pane.add(xEnd, c);
 
-        label = new JLabel("Высота начала и конца рельса:");
+        label = new JLabel("Высота начала и конца рельса (мм):");
         c.gridx = 1;
         c.gridy = 2;
         c.gridheight = 1;
@@ -127,7 +127,7 @@ public class PhysicsDemo {
         c.ipady = ipadY;
         pane.add(label, c);
 
-        label = new JLabel("Начальная скорость: ");
+        label = new JLabel("Начальная скорость (мм/с): ");
         c.gridx = 2;
         c.gridy = 4;
         c.gridheight = 1;
@@ -149,7 +149,7 @@ public class PhysicsDemo {
         c.ipady = 0;
         pane.add(startSpeed, c);
 
-        label = new JLabel("Координаты оптических ворот: ");
+        label = new JLabel("Координаты оптических ворот (мм): ");
         c.gridx = 1;
         c.gridy = 6;
         c.gridheight = 1;
@@ -299,8 +299,8 @@ public class PhysicsDemo {
         c.fill = GridBagConstraints.NORTH;
         c.anchor = GridBagConstraints.NORTH;
         JScrollPane scrollPane = new JScrollPane(log);
-        scrollPane.setMinimumSize(new Dimension((int) (HEIGHT / 2.0), (int) (HEIGHT / 1.5)));
-        scrollPane.setPreferredSize(new Dimension((int) (HEIGHT / 2.0), (int) (HEIGHT / 1.5)));
+        scrollPane.setMinimumSize(new Dimension((int) (HEIGHT / 2.0), (int) (HEIGHT / 1.3)));
+        scrollPane.setPreferredSize(new Dimension((int) (HEIGHT / 2.0), (int) (HEIGHT / 1.3)));
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         pane.add(scrollPane, c);
     }
