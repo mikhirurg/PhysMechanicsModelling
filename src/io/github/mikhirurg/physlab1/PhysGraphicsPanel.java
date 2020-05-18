@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.geom.Path2D;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -88,22 +89,31 @@ public class PhysGraphicsPanel extends JPanel {
             double sumZ2 = 0;
 
             for (PhysicsExperimentContainer cont : containers) {
-                double y = cont.getX2() - cont.getX1();
+                double Y = cont.getX2() - cont.getX1();
                 double z = (cont.getT2() * cont.getT2() - cont.getT1() * cont.getT1()) * mul / 2;
-                g2.fillOval((int) (z * getScale() - size / 2 + shiftX1), (int) ((getHeight() - (y - size / 2)) - shiftY1), size, size);
 
-                if (showDots) {
-                    g2.drawString("(" + format.format(z / mul) + "; " + format.format(y / 1000) + ")", (int) (z * getScale() - size / 2 - shiftX1), (float) ((getHeight() - (y - size / 2) - shiftY1)));
+                int x = (int) (z * getScale() - size / 2 + shiftX1);
+                int y = (int) (getHeight() - (Y - size / 2) - shiftY1);
+
+                if (x <= getWidth() / 2) {
+                    g2.fillOval(x, y, size, size);
+                    if (showDots) {
+                        g2.drawString("(" + format.format(z / mul) + "; " + format.format(Y / 1000) + ")", (int) (z * getScale() - size / 2 + shiftX1), (float) ((getHeight() - (Y - size / 2) - shiftY1)));
+                    }
                 }
 
-                sumZY += y * z;
+                sumZY += Y * z;
                 sumZ2 += z * z;
             }
 
             double a = sumZY / (sumZ2 * getScale());
 
             g2.setColor(Color.RED);
-            g2.drawLine((int) shiftX1, (int) (getHeight() - shiftY1), (int) (getWidth() / 2 + shiftX1), (int) (getHeight() - (getWidth() + shiftX1) / 2 * a - shiftY1));
+
+            double xMax = Math.min(getWidth() * mul + shiftX1, getWidth() / 2.0);
+
+            g2.drawLine((int) (-getWidth() * mul + shiftX1), (int) (getHeight() - (-getWidth() * mul) * a - shiftY1), (int) (xMax), (int) (getHeight() - (xMax - shiftX1) * a - shiftY1));
+
 
             // Graph2
 
@@ -117,18 +127,29 @@ public class PhysGraphicsPanel extends JPanel {
 
             for (PhysicsExperimentContainer cont : containers) {
                 a = cont.getAcc() + shiftY2;
-                double sinA = cont.getSinA() * mul + shiftX2;
-                g2.fillOval((int) sinA - size / 2, (int) (getHeight() - a - size / 2), size, size);
+                double sinA = cont.getSinA() * mul + shiftX2 + getWidth() / 2.0;
+                int x = (int) (sinA - size / 2.0);
+                int y = (int) (getHeight() - a - size / 2);
 
-                if (showDots) {
-                    g2.drawString("(" + format.format(cont.getSinA()) + "; " + format.format(cont.getAcc()) + ")", (int) sinA, (int) (getHeight() - a - size / 2));
+                if (x > getWidth() / 2) {
+                    g2.fillOval(x, y, size, size);
+                    if (showDots) {
+                        g2.drawString("(" + format.format(cont.getSinA()) + "; " + format.format(cont.getAcc()) + ")", x, y);
+                    }
                 }
 
+                sumAsinA += (cont.getAcc() / 1000 * cont.getSinA());
+                sumA += cont.getAcc() / 1000;
+                sumSinA += cont.getSinA();
+                sumSinA2 += cont.getSinA() * cont.getSinA();
             }
 
-
-
+            double B = (sumAsinA - sumA * sumSinA / containers.size()) / (sumSinA2 - (sumSinA * sumSinA) / containers.size());
+            double A = (sumA - B * sumSinA) / containers.size();
+            g2.setColor(Color.RED);
+            g2.drawLine((int) (Math.max(0, shiftX2) + getWidth() / 2), (int) (getHeight() - shiftY2 + Math.min(0, shiftX2) * B - A * mul), (int) (getWidth() * mul + shiftX2) + getWidth() / 2, (int) (getHeight() - (getWidth() * mul) * B - shiftY2 + A * mul));
         }
+
 
         g2.setColor(Color.BLACK);
 
@@ -137,6 +158,13 @@ public class PhysGraphicsPanel extends JPanel {
 
         drawAxis1(g2);
         drawAxis2(g2);
+    }
+
+    void resetShift() {
+        shiftX1 = 0;
+        shiftY1 = 0;
+        shiftX2 = 0;
+        shiftY2 = 0;
     }
 
     void drawAxis1(Graphics g) {
@@ -187,7 +215,7 @@ public class PhysGraphicsPanel extends JPanel {
             }
             if (i % (mod * 2) == 0) {
                 int shift = g2.getFontMetrics().stringWidth(String.valueOf(i / (double) mul)) / 2;
-                g2.drawString(format.format((i - shiftX2) / ((double) mul * getScale())), i - shift, getHeight() - 20);
+                g2.drawString(format.format((i - shiftX2 - getWidth() / 2.0) / ((double) mul)), i - shift, getHeight() - 20);
             }
         }
 

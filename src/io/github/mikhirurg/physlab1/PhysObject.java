@@ -62,7 +62,7 @@ public class PhysObject {
     public void paint(Graphics g2, int width, int height, double time, double shift) {
         g2.setColor(Color.RED);
         Point2D pos = getPosition(time);
-        g2.fillOval((int) (pos.getX()), (int) ((height - pos.getY() - w / 2)), (int) w, (int) h);
+        g2.fillOval((int) (pos.getX()), (int) ((height - pos.getY()  - w)), (int) w, (int) h);
         g2.setColor(Color.BLACK);
         g2.drawString("(" + format.format(pos.getX()) + "; " + format.format(pos.getY()) + ")", (int) ((int) pos.getX() + w), (int) (height - pos.getY()));
     }
@@ -80,7 +80,7 @@ public class PhysObject {
         Point2D acc = getAcc();
 
         out.append("Информация: \n");
-        out.append("Время: ").append(format.format(time)).append("\n");
+        out.append("Время: ").append(format.format(time)).append(" с\n");
         out.append("Координаты тела: \n -- (x: ").append(format.format(pos.getX())).append(" мм; ").append(format.format(pos.getY())).append(" мм)\n");
         out.append("Скорость: \n -- ")
                 .append("V = ").append(format.format(getSpeedD(time))).append(" мм/с")

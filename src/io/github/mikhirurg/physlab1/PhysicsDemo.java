@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class UI {
+public class PhysicsDemo {
     public static final int WIDTH = 1200;
     public static final int HEIGHT = 600;
     private static PhysicsPanel modPanel;
@@ -193,6 +193,7 @@ public class UI {
         c.gridheight = 1;
         c.ipadx = 0;
         c.ipady = 0;
+        c.insets = new Insets(ipadY, 0, 0, 0);
         pane.add(showDots, c);
 
         showGrid = new JCheckBox("Отобразить сетку");
@@ -281,6 +282,7 @@ public class UI {
             log.setText("");
             experiments.clear();
             id = 1;
+            graphPanel.resetShift();
             graphPanel.repaint();
         });
 
@@ -314,14 +316,14 @@ public class UI {
         }
 
         rail = new Rail(
-                0.22 * mul,
-                1.0 * mul,
-                0.54 * mul,
-                0.19 * mul,
-                0.1,
+                0.0 * mul,
+                1.1 * mul,
                 0.2 * mul,
-                0.35 * mul,
-                0.40 * mul
+                0.192 * mul,
+                0.0,
+                0.03 * mul,
+                0.15 * mul,
+                1.1 * mul
         );
         rail.calculate();
 
@@ -357,6 +359,6 @@ public class UI {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(UI::createAndShowGUI);
+        SwingUtilities.invokeLater(PhysicsDemo::createAndShowGUI);
     }
 }

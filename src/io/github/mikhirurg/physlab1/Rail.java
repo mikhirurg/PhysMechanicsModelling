@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.geom.Path2D;
 
 public class Rail {
-    private final int mul = 100;
+    private final int mul = 1000;
     private double xStart;
     private double xEnd;
     private double x1;
