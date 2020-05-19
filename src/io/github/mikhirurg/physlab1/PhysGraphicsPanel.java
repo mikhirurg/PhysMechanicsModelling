@@ -126,6 +126,12 @@ public class PhysGraphicsPanel extends JPanel {
                     , (int) (getHeight() - (-getWidth() * mul) * a - shiftY1)
                     , (int) (xMax), (int) (getHeight() - (xMax - shiftX1) * a - shiftY1));
 
+            Font old = g2.getFont();
+            g2.setColor(Color.BLACK);
+            g2.setFont(new Font(Font.MONOSPACED, Font.BOLD, 15));
+            String text = "a = " + format.format(a * getScale()) + " м/c^2";
+            g2.drawString(text, (int) (getWidth() / 2.0 - g2.getFontMetrics().stringWidth(text)), 20);
+            g2.setFont(old);
 
             // Graph2
 
@@ -138,38 +144,50 @@ public class PhysGraphicsPanel extends JPanel {
 
             g2.setColor(Color.BLACK);
 
-            for (PhysicsExperimentContainer cont : containers) {
-                a = cont.getAcc() + shiftY2;
-                double sinA = cont.getSinA() * mul + shiftX2 + getWidth() / 2.0;
-                int x = (int) (sinA - size / 2.0);
-                int y = (int) (getHeight() - a - size / 2);
+            if (containers.size() > 1) {
 
-                if (x > getWidth() / 2) {
-                    g2.fillOval(x, y, size, size);
-                    if (showDots) {
-                        g2.drawString("(" + format.format(cont.getSinA()) + "; " + format.format(cont.getAcc()) + ")"
-                                , x, y);
+                for (PhysicsExperimentContainer cont : containers) {
+                    a = cont.getAcc() + shiftY2;
+                    double sinA = cont.getSinA() * mul + shiftX2 + getWidth() / 2.0;
+                    int x = (int) (sinA - size / 2.0);
+                    int y = (int) (getHeight() - a - size / 2);
+
+                    if (x > getWidth() / 2) {
+                        g2.fillOval(x, y, size, size);
+                        if (showDots) {
+                            g2.drawString("(" + format.format(cont.getSinA()) + "; " + format.format(cont.getAcc()) + ")"
+                                    , x, y);
+                        }
                     }
+
+                    // Calculate params for line:
+
+                    sumAsinA += (cont.getAcc() / 1000 * cont.getSinA());
+                    sumA += cont.getAcc() / 1000;
+                    sumSinA += cont.getSinA();
+                    sumSinA2 += cont.getSinA() * cont.getSinA();
                 }
 
-                // Calculate params for line:
+                double B = (sumAsinA - sumA * sumSinA / containers.size()) / (sumSinA2 - (sumSinA * sumSinA) / containers.size());
+                double A = (sumA - B * sumSinA) / containers.size();
 
-                sumAsinA += (cont.getAcc() / 1000 * cont.getSinA());
-                sumA += cont.getAcc() / 1000;
-                sumSinA += cont.getSinA();
-                sumSinA2 += cont.getSinA() * cont.getSinA();
+                // Drawing approximate line for dots:
+
+                g2.setColor(Color.RED);
+                g2.drawLine((int) (Math.max(0, shiftX2) + getWidth() / 2)
+                        , (int) (getHeight() - shiftY2 + Math.min(0, shiftX2) * B - A * mul)
+                        , (int) (getWidth() * mul + shiftX2) + getWidth() / 2
+                        , (int) (getHeight() - (getWidth() * mul) * B - shiftY2 + A * mul));
+
+                old = g2.getFont();
+                g2.setColor(Color.BLACK);
+                g2.setFont(new Font(Font.MONOSPACED, Font.BOLD, 15));
+                text = "A = " + format.format(A) + " м/c^2";
+                g2.drawString(text, getWidth() - g2.getFontMetrics().stringWidth(text), 20);
+                text = "B = " + format.format(B) + " м/c^2";
+                g2.drawString(text, getWidth() - g2.getFontMetrics().stringWidth(text), 40);
+                g2.setFont(old);
             }
-
-            double B = (sumAsinA - sumA * sumSinA / containers.size()) / (sumSinA2 - (sumSinA * sumSinA) / containers.size());
-            double A = (sumA - B * sumSinA) / containers.size();
-
-            // Drawing approximate line for dots:
-
-            g2.setColor(Color.RED);
-            g2.drawLine((int) (Math.max(0, shiftX2) + getWidth() / 2)
-                    , (int) (getHeight() - shiftY2 + Math.min(0, shiftX2) * B - A * mul)
-                    , (int) (getWidth() * mul + shiftX2) + getWidth() / 2
-                    , (int) (getHeight() - (getWidth() * mul) * B - shiftY2 + A * mul));
         }
 
 

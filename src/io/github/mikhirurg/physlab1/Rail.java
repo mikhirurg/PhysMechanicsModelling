@@ -22,7 +22,7 @@ public class Rail {
     private double animDur;
 
     final double objectRadius = 30;
-    final double g = 9.8 * mul;
+    final double g = 9.8195 * mul;
     final double eps = 1e-10;
 
 
