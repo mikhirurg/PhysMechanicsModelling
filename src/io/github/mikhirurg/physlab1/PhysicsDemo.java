@@ -317,13 +317,13 @@ public class PhysicsDemo {
 
         rail = new Rail(
                 0.0 * mul,
-                1.1 * mul,
+                0.8 * mul,
                 0.2 * mul,
                 0.192 * mul,
                 0.0,
                 0.03 * mul,
                 0.15 * mul,
-                1.1 * mul
+                0.7 * mul
         );
         rail.calculate();
 
