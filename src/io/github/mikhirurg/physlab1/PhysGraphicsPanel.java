@@ -155,7 +155,7 @@ public class PhysGraphicsPanel extends JPanel {
                     if (x > getWidth() / 2) {
                         g2.fillOval(x, y, size, size);
                         if (showDots) {
-                            g2.drawString("(" + format.format(cont.getSinA()) + "; " + format.format(cont.getAcc()) + ")"
+                            g2.drawString("(" + format.format(cont.getSinA()) + "; " + format.format(cont.getAcc() / mul) + ")"
                                     , x, y);
                         }
                     }
