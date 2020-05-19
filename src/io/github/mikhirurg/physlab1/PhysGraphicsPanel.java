@@ -13,22 +13,24 @@ public class PhysGraphicsPanel extends JPanel {
 
     private final DecimalFormat format;
     private ArrayList<PhysicsExperimentContainer> containers;
-    private int size = 10;
-    private int mul = 1000;
+
+    // Variables and constants for graphs:
+    private final int size = 10;
+    private final int mul = 1000;
     private double scale;
-    private int mod = 20;
+    private final int mod = 20;
     private double shiftX2 = getWidth() * 0.8;
     private double shiftY2 = 0;
     private double shiftX1 = 0;
     private double shiftY1 = 0;
 
-
+    // Variables for mouse dragging:
     private double x0;
     private double y0;
     private double x1;
     private double y1;
 
-
+    // Keys for graph
     private boolean showDots;
     private boolean showGrid;
 
@@ -37,6 +39,8 @@ public class PhysGraphicsPanel extends JPanel {
         format = new DecimalFormat("#0.00");
         showDots = false;
         showGrid = false;
+
+        // Working with mouse events:
 
         this.addMouseListener(new MouseAdapter() {
             @Override
@@ -88,6 +92,8 @@ public class PhysGraphicsPanel extends JPanel {
             double sumZY = 0;
             double sumZ2 = 0;
 
+            // Drawing dots for Graph 1:
+
             for (PhysicsExperimentContainer cont : containers) {
                 double Y = cont.getX2() - cont.getX1();
                 double z = (cont.getT2() * cont.getT2() - cont.getT1() * cont.getT1()) * mul / 2;
@@ -98,7 +104,9 @@ public class PhysGraphicsPanel extends JPanel {
                 if (x <= getWidth() / 2) {
                     g2.fillOval(x, y, size, size);
                     if (showDots) {
-                        g2.drawString("(" + format.format(z / mul) + "; " + format.format(Y / 1000) + ")", (int) (z * getScale() - size / 2 + shiftX1), (float) ((getHeight() - (Y - size / 2) - shiftY1)));
+                        g2.drawString("(" + format.format(z / mul) + "; " + format.format(Y / 1000) + ")"
+                                , (int) (z * getScale() - size / 2 + shiftX1)
+                                , (float) ((getHeight() - (Y - size / 2) - shiftY1)));
                     }
                 }
 
@@ -112,7 +120,11 @@ public class PhysGraphicsPanel extends JPanel {
 
             double xMax = Math.min(getWidth() * mul + shiftX1, getWidth() / 2.0);
 
-            g2.drawLine((int) (-getWidth() * mul + shiftX1), (int) (getHeight() - (-getWidth() * mul) * a - shiftY1), (int) (xMax), (int) (getHeight() - (xMax - shiftX1) * a - shiftY1));
+            // Drawing approximate line for dots:
+
+            g2.drawLine((int) (-getWidth() * mul + shiftX1)
+                    , (int) (getHeight() - (-getWidth() * mul) * a - shiftY1)
+                    , (int) (xMax), (int) (getHeight() - (xMax - shiftX1) * a - shiftY1));
 
 
             // Graph2
@@ -122,6 +134,7 @@ public class PhysGraphicsPanel extends JPanel {
             double sumSinA = 0;
             double sumSinA2 = 0;
 
+            // Drawing dots for Graph 2:
 
             g2.setColor(Color.BLACK);
 
@@ -134,9 +147,12 @@ public class PhysGraphicsPanel extends JPanel {
                 if (x > getWidth() / 2) {
                     g2.fillOval(x, y, size, size);
                     if (showDots) {
-                        g2.drawString("(" + format.format(cont.getSinA()) + "; " + format.format(cont.getAcc()) + ")", x, y);
+                        g2.drawString("(" + format.format(cont.getSinA()) + "; " + format.format(cont.getAcc()) + ")"
+                                , x, y);
                     }
                 }
+
+                // Calculate params for line:
 
                 sumAsinA += (cont.getAcc() / 1000 * cont.getSinA());
                 sumA += cont.getAcc() / 1000;
@@ -146,12 +162,20 @@ public class PhysGraphicsPanel extends JPanel {
 
             double B = (sumAsinA - sumA * sumSinA / containers.size()) / (sumSinA2 - (sumSinA * sumSinA) / containers.size());
             double A = (sumA - B * sumSinA) / containers.size();
+
+            // Drawing approximate line for dots:
+
             g2.setColor(Color.RED);
-            g2.drawLine((int) (Math.max(0, shiftX2) + getWidth() / 2), (int) (getHeight() - shiftY2 + Math.min(0, shiftX2) * B - A * mul), (int) (getWidth() * mul + shiftX2) + getWidth() / 2, (int) (getHeight() - (getWidth() * mul) * B - shiftY2 + A * mul));
+            g2.drawLine((int) (Math.max(0, shiftX2) + getWidth() / 2)
+                    , (int) (getHeight() - shiftY2 + Math.min(0, shiftX2) * B - A * mul)
+                    , (int) (getWidth() * mul + shiftX2) + getWidth() / 2
+                    , (int) (getHeight() - (getWidth() * mul) * B - shiftY2 + A * mul));
         }
 
 
         g2.setColor(Color.BLACK);
+
+        // Drawing borders for graph:
 
         g2.drawRect(0, 0, getWidth() / 2, getHeight());
         g2.drawRect(getWidth() / 2, 0, getWidth(), getHeight());
@@ -168,6 +192,8 @@ public class PhysGraphicsPanel extends JPanel {
     }
 
     void drawAxis1(Graphics g) {
+        // Drawing axis for Graph 1:
+
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(Color.BLACK);
 
@@ -182,7 +208,10 @@ public class PhysGraphicsPanel extends JPanel {
             }
             if (i % (mod * 2) == 0) {
                 int shift = g2.getFontMetrics().stringWidth(String.valueOf(i / (double) mul)) / 2;
-                g2.drawString(format.format((i - shiftX1) / ((double) mul * getScale())), i - shift, getHeight() - 20);
+
+                g2.drawString(format.format((i - shiftX1) / ((double) mul * getScale()))
+                        , i - shift
+                        , getHeight() - 20);
             }
         }
 
@@ -193,7 +222,9 @@ public class PhysGraphicsPanel extends JPanel {
                 g2.drawLine(0, getHeight() - i, lenX, getHeight() - i);
             }
             if (i % (mod * 3) == 0) {
-                g2.drawString(String.valueOf(format.format((i - shiftY1) / 1000.0)), 20, (float) (getHeight() - i));
+                g2.drawString(String.valueOf(format.format((i - shiftY1) / 1000.0))
+                        , 20
+                        , (float) (getHeight() - i));
             }
         }
         g2.drawString("Y(M)", 10, 20);
@@ -213,9 +244,12 @@ public class PhysGraphicsPanel extends JPanel {
             if (i % mod == 0) {
                 g2.drawLine(i, getHeight() - lenY, i, getHeight());
             }
+
             if (i % (mod * 2) == 0) {
                 int shift = g2.getFontMetrics().stringWidth(String.valueOf(i / (double) mul)) / 2;
-                g2.drawString(format.format((i - shiftX2 - getWidth() / 2.0) / ((double) mul)), i - shift, getHeight() - 20);
+                g2.drawString(format.format((i - shiftX2 - getWidth() / 2.0) / ((double) mul))
+                        , i - shift
+                        , getHeight() - 20);
             }
         }
 
@@ -223,10 +257,16 @@ public class PhysGraphicsPanel extends JPanel {
 
         for (int i = 1; i < getHeight() - g2.getFontMetrics().getHeight(); i++) {
             if (i % mod == 0) {
-                g2.drawLine((int) (getWidth() / 2.0), getHeight() - i, (int) (getWidth() / 2.0 + lenX), getHeight() - i);
+                g2.drawLine((int) (getWidth() / 2.0)
+                        , getHeight() - i
+                        , (int) (getWidth() / 2.0 + lenX)
+                        , getHeight() - i);
             }
+
             if (i % (mod * 3) == 0) {
-                g2.drawString(String.valueOf(format.format((i - shiftY2) / 1000.0)), (float) (getWidth() / 2.0 + 20), (float) (getHeight() - i));
+                g2.drawString(String.valueOf(format.format((i - shiftY2) / 1000.0))
+                        , (float) (getWidth() / 2.0 + 20)
+                        , (float) (getHeight() - i));
             }
         }
         g2.drawString("a м/с^2", getWidth() / 2 + 10, 20);

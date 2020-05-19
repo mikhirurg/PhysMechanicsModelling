@@ -14,11 +14,11 @@ public class PhysicsExperimentContainer {
 
     PhysicsExperimentContainer(long id, double x1, double x2, double t1, double t2, double sinA, double acc) {
         this.id = id;
-        this.x1 =  x1;
-        this.x2 =  x2;
-        this.t1 =  t1;
-        this.t2 =  t2;
-        this.sinA =  sinA;
+        this.x1 = x1;
+        this.x2 = x2;
+        this.t1 = t1;
+        this.t2 = t2;
+        this.sinA = sinA;
         this.acc = acc;
         format = new DecimalFormat("#0.00");
     }
@@ -55,6 +55,6 @@ public class PhysicsExperimentContainer {
         return "Эксперимент #" + getID() +
                 "\n (x1: " + format.format(getX1()) + " мм, x2: " + format.format(getX2()) +
                 " мм)\n (t1: " + format.format(getT1()) + " с, t2: " + format.format(getT2()) +
-                " с)\n (sin(a): " + format.format(getSinA()) + ", Ускорение: " + format.format(getAcc())+" мм/c)\n\n";
+                " с)\n (sin(a): " + format.format(getSinA()) + ", Ускорение: " + format.format(getAcc()) + " мм/c)\n\n";
     }
 }

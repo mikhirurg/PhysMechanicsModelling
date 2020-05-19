@@ -35,31 +35,30 @@ public class PhysicsPanel extends JPanel {
 
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        g2.getTransform();
-
         g2.setColor(Color.gray);
         g2.fillRect(0, 0, getWidth(), getHeight());
+
+        // Transform phys scene by size of a window
+
         AffineTransform tmp = g2.getTransform();
         transform = g2.getTransform();
-
         resize = Math.min(1, getHeight() / (Math.max(rail.getHStart(), rail.getHEnd()) + object.getHeight()) / 1.1);
         transform.translate(0,
-                            getHeight() * (1 - resize));
+                getHeight() * (1 - resize));
         transform.scale(resize, resize);
-
         g2.setTransform(transform);
 
         rail.paint(g2, getWidth(), getHeight());
-        object.paint(g2, getWidth(), getHeight() , time, 0);
+        object.paint(g2, getWidth(), getHeight(), time, 0);
         drawAxis(g2);
         g2.setTransform(tmp);
         drawPhysObjectInfo(g2);
     }
 
     void drawAxis(Graphics2D g2) {
+        // Draw axis for phys scene
+
         g2.setColor(Color.BLACK);
-
-
         for (int i = 0; i < getWidth() / resize; i++) {
             if (i % mod == 0) {
                 g2.drawLine(i, getHeight() - 10, i, getHeight());
@@ -80,9 +79,11 @@ public class PhysicsPanel extends JPanel {
     }
 
     void drawPhysObjectInfo(Graphics2D g2) {
+        // Draw info about object
+
         Font old = g2.getFont();
 
-        g2.setFont(new Font(Font.MONOSPACED, Font.PLAIN, (int) (20*resize)));
+        g2.setFont(new Font(Font.MONOSPACED, Font.PLAIN, (int) (20 * resize)));
 
         double y1 = 20;
 

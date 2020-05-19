@@ -62,7 +62,7 @@ public class PhysObject {
     public void paint(Graphics g2, int width, int height, double time, double shift) {
         g2.setColor(Color.RED);
         Point2D pos = getPosition(time);
-        g2.fillOval((int) (pos.getX()), (int) ((height - pos.getY()  - w)), (int) w, (int) h);
+        g2.fillOval((int) (pos.getX()), (int) ((height - pos.getY() - w)), (int) w, (int) h);
         g2.setColor(Color.BLACK);
         g2.drawString("(" + format.format(pos.getX()) + "; " + format.format(pos.getY()) + ")", (int) ((int) pos.getX() + w), (int) (height - pos.getY()));
     }

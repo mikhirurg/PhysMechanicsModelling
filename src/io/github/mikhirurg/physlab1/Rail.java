@@ -96,11 +96,11 @@ public class Rail {
     }
 
     public void setX1(double x1) {
-        this.x1 =  x1;
+        this.x1 = x1;
     }
 
     public void setX2(double x2) {
-        this.x2 =  x2;
+        this.x2 = x2;
     }
 
     public double getxStart() {
