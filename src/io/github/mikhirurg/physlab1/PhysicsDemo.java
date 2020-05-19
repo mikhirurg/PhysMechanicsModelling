@@ -234,6 +234,11 @@ public class PhysicsDemo {
                     double dx1 = Double.parseDouble(x1.getText());
                     double dx2 = Double.parseDouble(x2.getText());
 
+                    if (dmu < 0 || dStartSpeed <= 0 || dXStart > dXEnd
+                            || dXEnd < dx1 || dXEnd < dx2
+                            || dXStart > dx1 || dXStart > dx2) {
+                        throw new NumberFormatException();
+                    }
 
                     rail.setxStart(dXStart);
                     rail.setxEnd(dXEnd);

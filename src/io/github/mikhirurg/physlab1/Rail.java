@@ -77,6 +77,10 @@ public class Rail {
         g2.setColor(Color.BLACK);
         g2.drawString(String.valueOf(x1), (int) x1 - 5, (int) (height - Math.max(hStart, hEnd) - g2.getFontMetrics().getHeight() - 20));
         g2.drawString(String.valueOf(x2), (int) x2 - 5, (int) (height - Math.max(hStart, hEnd) - g2.getFontMetrics().getHeight() - 20));
+
+        g2.drawString("X1", (int) x1 - 5, (int) (height - Math.max(hStart, hEnd) - 2 * g2.getFontMetrics().getHeight() - 20));
+        g2.drawString("X2", (int) x2 - 5, (int) (height - Math.max(hStart, hEnd) - 2 * g2.getFontMetrics().getHeight() - 20));
+
         g2.setColor(Color.ORANGE);
         Path2D.Double wedge = new Path2D.Double();
         wedge.moveTo(xStart, (height - hStart));
