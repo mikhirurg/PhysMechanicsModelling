@@ -326,7 +326,7 @@ public class PhysicsDemo {
                 0.2 * mul,
                 0.192 * mul,
                 0.0,
-                0.03 * mul,
+                0.00 * mul,
                 0.15 * mul,
                 0.7 * mul
         );
